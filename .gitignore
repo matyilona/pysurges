@@ -1,2 +1,5 @@
 __pycache__
 .ipynb_checkpoints
+examples/*.dxf
+examples/*-generator.ipynb
+examples/*.gds

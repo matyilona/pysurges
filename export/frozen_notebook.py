@@ -1,5 +1,6 @@
 import ipyparams
 import nbformat
+import re
 
 def save_frozen_notebook( filename : str ) -> None :
     nb = nbformat.read( open( ipyparams.notebook_name, "r" ), nbformat.current_nbformat )
