@@ -16,7 +16,7 @@ def save_dxf( polys: Iterable[ shpgm.Polygon ], filename: str, save_notebook: bo
         Filename without .dxf extension
     """
 
-    doc = ez.new( setup=True )
+    doc = ezdxf.new( setup=True )
     mps = doc.modelspace()
     for p in polys:
         boundary = list( zip( *p.exterior.xy ) )
