@@ -204,23 +204,21 @@ def launcher( s: float, w: float, a: float, b: float, c: float, g: float ) -> Po
     launcher = outside.difference( inside )
     return( launcher, inside, outside )
 
-def generate_dots_sq( r: float, d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Polygon ]:
+def generate_points_sq( d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Point ]:
     """
-    Generate square lattice of round dots
+    Generate square lattice of shapely Points
     
     Parameters
     ----------
-    r : float
-		Radius of single dot
     d : float
-		Distance between centers of dots
+		Distance between dots
     bounding_box : Tuple[ float, float, float, float ]	
 		Bounding box to fill with the pattern
 	
-	Returns
-	-------
-	pattern : List[ Polygon ]
-		List of shapely polygons
+    Returns
+    -------
+    dots : List[ Point ]
+            List of shapely Points
     """
     
     x1,y1,x2,y2 = bounding_box
@@ -229,26 +227,24 @@ def generate_dots_sq( r: float, d: float, bounding_box: Tuple[ float, float, flo
     dots = []
     for x in range( int(nx)+1 ):
         for y in range( int(ny)+1 ):
-            dots.append( Polygon(circle_segment(Point(x*d+x1,y*d+y1),r,a1=0, a2=np.pi*2 ) ) )
+            dots.append( Point(x*d+x1,y*d+y1) )
     return( dots )
 
-def generate_dots_tri( r: float, d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Polygon ]:
+def generate_pints_tri( d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Point ]:
     """
-    Generate triangle lattice of round dots
+    Generate triangle lattice of shapely Points
     
     Parameters
     ----------
-    r : float
-		Radius of single dot
     d : float
 		Distance between centers of dots
     bounding_box : Tuple[ float, float, float, float ]	
 		Bounding box to fill with the pattern
 		
-	Returns
-	-------
-	pattern : List[ Polygon ]
-		List of shapely polygons
+    Returns
+    -------
+    dots : List[ Point ]
+            List of shapely points
     """
     
     x1,y1,x2,y2 = bounding_box
@@ -257,9 +253,7 @@ def generate_dots_tri( r: float, d: float, bounding_box: Tuple[ float, float, fl
     dots = []
     for x in range( int(nx)+1 ):
         for y in range( int(ny)+1 ):
-            dots.append(Polygon(circle_segment(
-                Point((x+y%2/2)*d+x1,y*d/np.sqrt(2)+y1)
-                ,r,0,np.pi*2)))
+            dots.append( Point((x+y%2/2)*d+x1,y*d/np.sqrt(2)+y1) )
     return( dots )
 
 def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Polygon ]:
@@ -275,10 +269,10 @@ def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, flo
     bounding_box : Tuple[ float, float, float, float ]
 		x1,y1,x2,y2 bounds of area to generate pattern in
 		
-	Returns
-	-------
-	pattern : List[ Polygon ]
-		List of shapely polygons
+    Returns
+    -------
+    pattern : List[ Polygon ]
+            List of shapely polygons
     """
     
     x1,y1,x2,y2 = bounding_box
