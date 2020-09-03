@@ -132,10 +132,10 @@ def line_to_cpwg( line: Union[ LineString, MultiLineString ], s: float, w: float
 		right_line : midline of the right ditch		
     """
 
-    left_line = line.parallel_offset( (s+w)/2, "left", resolution=1 )
-    right_line = line.parallel_offset( (s+w)/2, "right", resolution=1 )
-    left_ditch = left_line.buffer( w/2, cap_style=2, resolution=1, )
-    right_ditch = right_line.buffer( w/2, cap_style=2, resolution=1 )
+    left_line = line.parallel_offset( (s+w)/2, "left", join_style=2, resolution=1 )
+    right_line = line.parallel_offset( (s+w)/2, "right", join_style=2, resolution=1 )
+    left_ditch = left_line.buffer( w/2, cap_style=2, join_style=2, resolution=1, )
+    right_ditch = right_line.buffer( w/2, cap_style=2, join_style=2, resolution=1 )
     return( (left_ditch, right_ditch, left_line, right_line) )
     
 def basic_meander( l: float, r: float, n: int, s: float, w: float, d: int = 10 ) -> Tuple[ Polygon, Polygon, LineString, LineString, LineString ]:
@@ -230,7 +230,7 @@ def generate_points_sq( d: float, bounding_box: Tuple[ float, float, float, floa
             dots.append( Point(x*d+x1,y*d+y1) )
     return( dots )
 
-def generate_pints_tri( d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Point ]:
+def generate_points_tri( d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Point ]:
     """
     Generate triangle lattice of shapely Points
     
@@ -249,14 +249,14 @@ def generate_pints_tri( d: float, bounding_box: Tuple[ float, float, float, floa
     
     x1,y1,x2,y2 = bounding_box
     nx = (x2-x1)/d
-    ny = (y2-y1)/d*np.sqrt(2)
+    ny = (y2-y1)/d
     dots = []
     for x in range( int(nx)+1 ):
         for y in range( int(ny)+1 ):
-            dots.append( Point((x+y%2/2)*d+x1,y*d/np.sqrt(2)+y1) )
+            dots.append( Point((x+y%2/2)*d+x1,y*d+y1) )
     return( dots )
 
-def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Polygon ]:
+def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, float, float ], latt: str = "tri" ) -> List[ Polygon ]:
     """
     Generate square pattern
     
@@ -268,6 +268,8 @@ def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, flo
 		Distance between squares
     bounding_box : Tuple[ float, float, float, float ]
 		x1,y1,x2,y2 bounds of area to generate pattern in
+    latt : str
+        type of lattice, "tri" or "sq"
 		
     Returns
     -------
@@ -275,11 +277,8 @@ def generate_squares( a: float, d: float, bounding_box: Tuple[ float, float, flo
             List of shapely polygons
     """
     
-    x1,y1,x2,y2 = bounding_box
-    nx = (x2-x1)/d
-    ny = (y2-y1)/d
+    point_generator = { "sq" : generate_points_sq, "tri" : generate_points_tri }[latt]
     squares = []
-    for x in range( int(nx)+1 ):
-        for y in range( int(ny)+1 ):
-            squares.append( square(Point((x+y%2/2)*d+x1,y*d+y1),a))
+    for p in point_generator( d, bounding_box ):
+            squares.append( square( p, a ) )
     return( squares )
