@@ -25,6 +25,28 @@ def poly_to_gds( poly: shpgm.Polygon, layer: int = 0 ) -> gdstk.Polygon :
     gds.layer = layer
     return( gds )
 
+def line_to_gds( line: shpgm.LineString, width: float, layer: int = 0 ) -> gdstk.FlexPath :
+    """
+    Create a gdst path from a shapely LineString
+
+    Parameters
+    ----------
+    line : shapely.geometry.LineString
+        Line to be converted
+        Should be made up of straight segments only
+    width : width of the line
+    layer : int
+        GDS layer to put element on
+
+    Returns
+    -------
+    gds : gstk.FlexPath
+        gds element that can be added to a gds cell
+    """
+
+    gds = gdstk.FlexPath( [*line.coords], width, layer=layer )
+    return( gds )
+
 def save_gds_polys( polys: Iterable[ gdstk.Polygon ], filename: str, save_notebook:bool = False ) -> None :
     """
     Saves gdstk polygons into file, as well as a frozen version of the current notebook
@@ -46,4 +68,4 @@ def save_gds_polys( polys: Iterable[ gdstk.Polygon ], filename: str, save_notebo
     lib.write_gds( filename+".gds" )
 
     if save_notebook:
-        save_frozen_notebook( filename+"-generator.ipynb" )
+        save_frozen_notebook( filename )
