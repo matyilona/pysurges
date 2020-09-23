@@ -21,7 +21,12 @@ def poly_to_gds( poly: shpgm.Polygon, layer: int = 0 ) -> gdstk.Polygon :
         gds element that can be added to a gds cell
     """
 
-    gds = gdstk.Polygon( list( zip( *poly.exterior.xy ) ) )
+    gds_list = list( zip( *poly.exterior.xy ) )
+    for i in poly.interiors:
+        p = gds_list[-1]
+        gds_list.extend( list( zip( *i.xy ) ) )
+        gds_list.append( p )
+    gds = gdstk.Polygon( gds_list )
     gds.layer = layer
     return( gds )
 
