@@ -1,6 +1,6 @@
 from IPython.display import display, SVG
 from lxml import etree
-from typing import Iterable, Union, Tuple, List
+from typing import Iterable, Union, Tuple, List, Optional
 import shapely as sp
 from shapely.geometry import Point, LineString, MultiLineString, Polygon, MultiPolygon
 
@@ -70,7 +70,7 @@ def nice_svg( e: shapely_displayable, attribs: dict = {"stroke-width":"0"} ) -> 
         svg.attrib[k] = attribs[k]
     return( svg )
 
-def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, float, float] ) -> None:
+def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, float, float], save_filename: Optional[str] = None ) -> None:
     """
     Display list of elements as an SVG in jupyter notebook
     
@@ -91,5 +91,7 @@ def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, fl
     """)
     for e in elements:
         svg_root.append( e )
+    if save_filename is not None:
+        etree.ElementTree(svg_root).write( save_filename )
     display(SVG(etree.tostring(svg_root)))
     
