@@ -4,22 +4,23 @@ from shapely import ops
 import numpy as np
 from shapely.geometry import Point, LineString, MultiLineString, Polygon
 
-def circle_segment( P: Point, r: float, a1: float = 0, a2: float = np.pi, d: int = 10, decimals = 5) -> LineString:
+def circle_segment( P: Point, r: float, a1: float = 0, a2: float = np.pi, d: int = 10, decimals: int = 5) -> LineString:
     """
     Generate cricle segment, made of linesegments
     
     Parameters
     ----------
-    P : Point
+    P : shapely Point
 		Center of circle
     r : float
 		Radius of circle
-    a1, a2 : float
+    a1, a2 : float, optional
 		Starting/ending angles, starts at 12:00 goes clockwise
-    d : float
-		Number of line segments
-    decimals : float
-                Decimals to round to, to avoid nonequal points
+        If omitted generates full circle, starting at 12:00
+    d : float, optional
+		Number of line segments. Defaults to 10
+    decimals : float, optional
+        Decimals to round to, to avoid nonequal points. Defaults to 5
 	
     Returns
     -------
@@ -38,7 +39,7 @@ def box( P: Point, a: float, b: float ) -> Polygon:
     
     Parameters
     ----------
-    P : Point
+    P : shapely Point
 		Midpoint of rectangle
     a : float
 		Width (along x axis)
@@ -47,7 +48,7 @@ def box( P: Point, a: float, b: float ) -> Polygon:
 		
 	Returns
 	-------
-	box : Polygon
+	box : shapely Polygon
 		Shapely polygon
     """
 
@@ -65,10 +66,15 @@ def square( P: Point, a: float ) -> Polygon:
     
     Parameters
     ----------
-    P : Point
+    P : shapely Point
 		Center of square
     a : float
 		Side length
+
+	Returns
+	-------
+	box : shapely Polygon
+		Shapely polygon
     """
     
     return( box(P,a,a) )
@@ -85,8 +91,9 @@ def basic_meander_line( l: float, r: float, n: int, d: int=10 ) -> LineString:
 		Radius bends
     n : int
 		No. of total straight segments
-	d : int
-		No. of linear segments making up bends
+	d : int, optional
+		No. of linear segments making up bends.
+        Defaults to 10.
 		
 	Returns
 	-------
@@ -117,14 +124,14 @@ def line_to_cpwg( line: Union[ LineString, MultiLineString ], s: float, w: float
     
     Parameters
     ----------
-    line : Union[ LineString, MultiLineString ]
+    line : shapely LineString or MultiLineString
 		Line(s) to create CPWG from, might not always work with MultiLineString
     s, w : float
 		CPWG parameters
 		
 	Returns
 	-------
-	elements : Tuple[ Polygon, Polygon, LineString, LineString, LineString ]
+	elements : tuple of shapely [Polygon, Polygon, LineString, LineString]
 		Tuple of shapley shapes generated, in order:
 		left_ditch : left CPWG ditch
 		right_ditch : right CPWG ditch
@@ -153,10 +160,11 @@ def basic_meander( l: float, r: float, n: int, s: float, w: float, d: int = 10 )
 		Radius bends
     n : int
 		No. of total straight segments
-	d : int
+	d : int, optional
 		No. of linear segments making up bends
+        Defaults to 10
 		
-	elements : Tuple[ Polygon, Polygon, LineString, LineString, LineString ]
+	elements : Tuple of sahpely  Polygon, Polygon, LineString, LineString, LineString]
 		Tuple of shapley shapes generated, in order:
 		left_ditch : left CPWG ditch
 		right_ditch : right CPWG ditch
@@ -188,9 +196,9 @@ def launcher( s: float, w: float, a: float, b: float, c: float, g: float, overla
 		Lengt of transitional triangle
     g : float
 		Gap around launcher
-    overlap : float
-                Add bits to end of launcher to overlap with the line.
-                Sometimes needed due to software issues in RAITH.
+    overlap : float, optional
+        Add bits to end of launcher to overlap with the line.
+        Sometimes needed due to software issues in RAITH.
 		
     Returns
     -------
@@ -218,7 +226,7 @@ def generate_points_sq( d: float, bounding_box: Tuple[ float, float, float, floa
     ----------
     d : float
 		Distance between dots
-    bounding_box : Tuple[ float, float, float, float ]	
+    bounding_box : Tuple of floats
 		Bounding box to fill with the pattern
 	
     Returns

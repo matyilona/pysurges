@@ -26,7 +26,7 @@ def generate_svg_grid( x: float, y: float,
 		
 	Returns
 	-------
-	grid_svg : etree.XML
+	grid_svg : etree
 		svg node containing the minor and major grid
     """
     
@@ -56,12 +56,14 @@ def nice_svg( e: shapely_displayable, attribs: dict = {"stroke-width":"0"} ) -> 
     
     Parameters
     ----------
+    e : shapely object
+        object to be displayed
     attribs : dict
-		attributes to be overvriten/given
+		attributes to be overwriten/given
 		
 	Returns
 	-------
-	svg : etree.XML
+	svg : etree
 		svg element containing the themed shape
     """
     
@@ -70,18 +72,20 @@ def nice_svg( e: shapely_displayable, attribs: dict = {"stroke-width":"0"} ) -> 
         svg.attrib[k] = attribs[k]
     return( svg )
 
-def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, float, float], save_filename: Optional[str] = None ) -> None:
+def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, float, float], savefile_name: Optional[str] = None ) -> None:
     """
     Display list of elements as an SVG in jupyter notebook
     
     Parameters
     ----------
-    elements : Itreable[ etree.XML ]
+    elements : iterable of etree
 		Iterable of svg elements, such as returned by nice_svg
 		and svg_grid
-	bounds : Tuple[ float, float, float, float ]
+	bounds : tuple of float
 		Bounds of the area to display, can be smaller of larger than
 		the actual area of the drawing0
+    savefile_name : str, optional
+        Filename for .svg, if not given no file is generated.
     """
     
     x1,y1,x2,y2 = bounds

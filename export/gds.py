@@ -9,15 +9,14 @@ def poly_to_gds( poly: shpgm.Polygon, layer: int = 0 ) -> gdstk.Polygon :
 
     Parameters
     ----------
-    poly : shapely.geometry.Polygon
+    poly : shapely polygon
         Polygon to be converted
-        Can not have any holes, only exterior is converted
-    layer : int
+    layer : int, optional
         GDS layer to put polygon on
 
     Returns
     -------
-    gds : gdstk.Polygon
+    gds : gdstk polygon
         gds element that can be added to a gds cell
     """
 
@@ -36,11 +35,12 @@ def line_to_gds( line: shpgm.LineString, width: float, layer: int = 0 ) -> gdstk
 
     Parameters
     ----------
-    line : shapely.geometry.LineString
+    line : shapely LineString
         Line to be converted
         Should be made up of straight segments only
-    width : width of the line
-    layer : int
+    width : float
+        width of the line
+    layer : int, optional
         GDS layer to put element on
 
     Returns
@@ -52,17 +52,17 @@ def line_to_gds( line: shpgm.LineString, width: float, layer: int = 0 ) -> gdstk
     gds = gdstk.FlexPath( [*line.coords], width, layer=layer )
     return( gds )
 
-def save_gds_polys( polys: Iterable[ gdstk.Polygon ], filename: str, save_notebook:bool = False ) -> None :
+def save_gds_polys( polys: Iterable[ gdstk.Polygon ], filename: str, save_notebook: bool = False ) -> None :
     """
-    Saves gdstk polygons into file, as well as a frozen version of the current notebook
+    Saves gdstk polygons into file
 
     Parameters
     ----------
-    polys : Iterable[ gdstk.Polygon ]
+    polys : iterable of gdstk Polygons
         Polygons to save
     filename : str
         Filename without .gds extension
-    save_notebook : bool
+    save_notebook : bool, optional
         If True, save a frozen version of the notebook along with the gds file
     """
 

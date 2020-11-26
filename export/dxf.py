@@ -8,10 +8,14 @@ def save_dxf( shapes: Iterable[ Union[ shpgm.Polygon, shpgm.Point] ], filename: 
     """
     Saves polygons and points in a dxf file
 
+    DXF files generated can have line endings different from the platfroms
+    they will be read at. File generated with these scripts might need to be
+    converted to the correct line endings. This seems to only affect .dxf files.
+
     Parameters
     ----------
-    polys : Iterable[ Union[ shpgm.Polygon, shpgm.Point ] ]
-        Iterable of shapely polygons and points to include
+    polys : iterable of shapely polygons and points
+        shapely polygons and points to include in dxf
     fiename : str
         Filename without .dxf extension
     """
