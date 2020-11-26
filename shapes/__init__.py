@@ -1,4 +1,4 @@
-from typing import Iterable, Union, Tuple, List
+from typing import Iterable, Union, Optional, Tuple, List
 import shapely as sp
 from shapely import ops
 import numpy as np
@@ -174,7 +174,7 @@ def basic_meander( l: float, r: float, n: int, s: float, w: float, d: int = 10 )
     right_ditch = right_line.buffer( w/2, cap_style=2, resolution=1 )
     return( (left_ditch, right_ditch, line, left_line, right_line) )
 
-def launcher( s: float, w: float, a: float, b: float, c: float, g: float ) -> Polygon:
+def launcher( s: float, w: float, a: float, b: float, c: float, g: float, overlap: Optional[ float ] = None ) -> Polygon:
     """
     Generate rectangular launcher, faces to right, line starts at (0,0)
     
@@ -188,11 +188,14 @@ def launcher( s: float, w: float, a: float, b: float, c: float, g: float ) -> Po
 		Lengt of transitional triangle
     g : float
 		Gap around launcher
+    overlap : float
+                Add bits to end of launcher to overlap with the line.
+                Sometimes needed due to software issues in RAITH.
 		
-	Returns
-	-------
-	launcher : Polygon
-		Launcher as a single polygon
+    Returns
+    -------
+    launcher : Polygon
+        Launcher as a single polygon
     """
     
     outer_launcher = box( Point(c+a/2+g/2,0), a+g, b+2*g )
@@ -202,6 +205,9 @@ def launcher( s: float, w: float, a: float, b: float, c: float, g: float ) -> Po
     inside = ops.unary_union( [inner_trans, inner_launcher] )
     outside = ops.unary_union( [outer_trans, outer_launcher] )
     launcher = outside.difference( inside )
+    if overlap:
+        l, r, _, _ = line_to_cpwg( LineString( [[0,0],[-overlap,0]] ), s, w )
+        launcher = ops.unary_union( [launcher, l, r] )
     return( launcher, inside, outside )
 
 def generate_points_sq( d: float, bounding_box: Tuple[ float, float, float, float ] ) -> List[ Point ]:

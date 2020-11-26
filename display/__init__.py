@@ -86,7 +86,7 @@ def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, fl
     
     x1,y1,x2,y2 = bounds
     svg_root = etree.XML(f"""
-    <svg viewbox='{x1} {y1} {x2-x1} {y2-y1}' >
+    <svg viewbox='{x1} {y1} {x2-x1} {y2-y1}' transform="scale(1,-1)" >
     </svg>
     """)
     for e in elements:
