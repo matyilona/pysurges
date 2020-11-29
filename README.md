@@ -1,1 +1,1 @@
-![pysurges logo](data/logo.svg)
+![pysurges logo](data/logo.png)

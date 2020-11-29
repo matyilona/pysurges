@@ -3,3 +3,6 @@ __pycache__
 examples/*.dxf
 examples/*-generator.ipynb
 examples/*.gds
+examples/gdss
+examples/generators
+*hunqutech*
