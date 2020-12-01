@@ -1,7 +1,7 @@
 from typing import Iterable, Union, Tuple, List
 import shapely.geometry as shpgm
 import gdstk
-from export.frozen_notebook import save_frozen_notebook
+from pysurges.export.frozen_notebook import save_frozen_notebook
 
 def poly_to_gds( poly: shpgm.Polygon, layer: int = 0 ) -> gdstk.Polygon :
     """

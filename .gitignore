@@ -5,4 +5,10 @@ examples/*-generator.ipynb
 examples/*.gds
 examples/gdss
 examples/generators
-*hunqutech*
+python-*
+build
+dist
+*.egg-info
+testpypitoken
+.pypirc
+pysurges-test

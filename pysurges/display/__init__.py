@@ -95,7 +95,7 @@ def display_svg( elements: Iterable[ etree.XML ], bounds: Tuple[float, float, fl
     """)
     for e in elements:
         svg_root.append( e )
-    if save_filename is not None:
-        etree.ElementTree(svg_root).write( save_filename )
+    if savefile_name is not None:
+        etree.ElementTree(svg_root).write( savefile_name )
     display(SVG(etree.tostring(svg_root)))
     
