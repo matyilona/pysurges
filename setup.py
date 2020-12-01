@@ -11,8 +11,9 @@ setuptools.setup(
     description="Package for the parametric design on superconducting resonator systems",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="http://example.com",
+    url="https://github.com/matyilona/pysurges",
     packages=setuptools.find_packages(),
+    install_requires=['shapely','gdstk','ezdxf','lxml','jupyter','ipyparams'],
     license="GPLv3",
     classifiers=[
         "Intended Audience :: Science/Research",
