@@ -2,7 +2,7 @@ from typing import Iterable, Union, Tuple, List
 import shapely as sp
 import shapely.geometry as shpgm
 import ezdxf
-from export.frozen_notebook import save_frozen_notebook
+from pysurges.export.frozen_notebook import save_frozen_notebook
 
 def save_dxf( shapes: Iterable[ Union[ shpgm.Polygon, shpgm.Point] ], filename: str, save_notebook: bool = False ) -> None :
     """
@@ -33,6 +33,11 @@ def save_dxf( shapes: Iterable[ Union[ shpgm.Polygon, shpgm.Point] ], filename: 
             boundary = list( zip( *s.exterior.xy ) )
             boundary.append( boundary[0] )
             mps.add_lwpolyline( boundary, dxfattribs = { 'layer': 'main' } )
+        elif type( s ) == shpgm.MultiPolygon:
+            for p in s:
+                boundary = list( zip( *p.exterior.xy ) )
+                boundary.append( boundary[0] )
+                mps.add_lwpolyline( boundary, dxfattribs = { 'layer': 'main' } )
         else:
             raise TypeError( "Only points and polygons can be exported to .dxf!" )
     doc.saveas( filename+".dxf" )
